@@ -1,0 +1,168 @@
+.asset-detail {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 20px;
+}
+
+.detail-header {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  color: white;
+  position: relative;
+}
+
+.back-button {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.back-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.detail-header h1 {
+  font-size: 42px;
+  margin: 16px 0 8px 0;
+  color: white;
+}
+
+.symbol-badge {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.chart-container {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin: 0 auto 40px;
+  max-width: 1200px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.chart-container h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 18px;
+  color: white;
+  font-weight: 500;
+}
+
+.error-message {
+  background: #ff6b6b;
+  color: white;
+  padding: 16px;
+  border-radius: 8px;
+  margin: 20px auto;
+  max-width: 600px;
+  text-align: center;
+}
+
+.prediction-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.prediction-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.prediction-card h3 {
+  margin-bottom: 24px;
+  color: #333;
+  font-size: 20px;
+}
+
+.prediction-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.metric {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+  border-top: 4px solid #667eea;
+}
+
+.metric-label {
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #333;
+  margin: 0;
+}
+
+.model-info {
+  background: #f0f4ff;
+  padding: 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #555;
+  border-left: 4px solid #667eea;
+}
+
+@media (max-width: 768px) {
+  .asset-detail {
+    padding: 20px 10px;
+  }
+
+  .detail-header h1 {
+    font-size: 28px;
+  }
+
+  .chart-container {
+    padding: 20px;
+  }
+
+  .prediction-card {
+    padding: 20px;
+  }
+
+  .prediction-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .metric {
+    padding: 16px;
+  }
+
+  .metric-value {
+    font-size: 18px;
+  }
+}
