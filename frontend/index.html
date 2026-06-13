@@ -4,10 +4,34 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>frontend</title>
+    <title>Financial Asset Trend Predictor</title>
+    <link rel="stylesheet" href="/src/styles/Login.css" />
   </head>
   <body>
+    <div class="full-screen-container">
+      <div class="login-container">
+        <h1 class="login-title">
+          Welcome to the Financial Asset Trend Predictor
+        </h1>
+        <form class="form">
+          <div class="input-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" />
+            <span class="msg">Valid Email</span>
+          </div>
+
+          <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" />
+            <span class="msg">Incorrect Password</span>
+          </div>
+
+          <button type="submit" class="login-button">Login</button>
+        </form>
+      </div>
+    </div>
     <div id="root"></div>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
