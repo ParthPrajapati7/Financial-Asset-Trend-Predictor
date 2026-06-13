@@ -84,3 +84,5 @@ C:\Users\ppraj\AppData\Local\Programs\Python\Python312\Lib\site-packages\sklearn
 127.0.0.1 - - [13/Jun/2026 15:30:04] "GET /api/assets/AAPL/prediction HTTP/1.1" 200 -
 127.0.0.1 - - [13/Jun/2026 15:30:07] "GET /api/assets HTTP/1.1" 200 -
 127.0.0.1 - - [13/Jun/2026 15:30:07] "GET /api/assets HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jun/2026 15:33:36] "GET /api/assets HTTP/1.1" 200 -
+127.0.0.1 - - [13/Jun/2026 15:33:37] "GET /api/assets HTTP/1.1" 200 -
