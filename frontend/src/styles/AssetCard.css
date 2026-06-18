@@ -5,6 +5,7 @@
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
   transition: all 0.3s ease;
   cursor: pointer;
+  border-left: 6px solid;
   display: flex;
   flex-direction: column;
   height: 100%;

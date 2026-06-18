@@ -124,3 +124,13 @@ C:\Users\ppraj\AppData\Local\Programs\Python\Python312\Lib\site-packages\sklearn
 127.0.0.1 - - [13/Jun/2026 16:27:38] "GET /api/assets HTTP/1.1" 200 -
 127.0.0.1 - - [13/Jun/2026 16:28:07] "GET /api/assets HTTP/1.1" 200 -
 127.0.0.1 - - [13/Jun/2026 16:28:08] "GET /api/assets HTTP/1.1" 200 -
+127.0.0.1 - - [16/Jun/2026 14:25:11] "GET /api/assets/AAPL/history HTTP/1.1" 200 -
+C:\Users\ppraj\AppData\Local\Programs\Python\Python312\Lib\site-packages\sklearn\utils\validation.py:2691: UserWarning: X does not have valid feature names, but StandardScaler was fitted with feature names
+  warnings.warn(
+127.0.0.1 - - [16/Jun/2026 14:25:11] "GET /api/assets/AAPL/history HTTP/1.1" 200 -
+127.0.0.1 - - [16/Jun/2026 14:25:11] "GET /api/assets/AAPL/prediction HTTP/1.1" 200 -
+C:\Users\ppraj\AppData\Local\Programs\Python\Python312\Lib\site-packages\sklearn\utils\validation.py:2691: UserWarning: X does not have valid feature names, but StandardScaler was fitted with feature names
+  warnings.warn(
+127.0.0.1 - - [16/Jun/2026 14:25:12] "GET /api/assets/AAPL/prediction HTTP/1.1" 200 -
+127.0.0.1 - - [16/Jun/2026 14:25:16] "GET /api/assets HTTP/1.1" 200 -
+127.0.0.1 - - [16/Jun/2026 14:25:16] "GET /api/assets HTTP/1.1" 200 -
