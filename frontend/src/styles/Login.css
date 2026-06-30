@@ -17,6 +17,14 @@ body {
   margin: 0;
 }
 
+#root:not(.authenticated) {
+  display: none;
+}
+
+.full-screen-container.hidden {
+  display: none;
+}
+
 .full-screen-container {
   background-color: #000000;
   background-size: cover;

@@ -13,25 +13,84 @@
         <h1 class="login-title">
           Welcome to the Financial Asset Trend Predictor
         </h1>
-        <form class="form">
-          <div class="input-group">
+        <form class="form" id="login-form">
+          <div class="input-group" id="email-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" />
+            <input type="email" id="email" name="email" required />
             <span class="msg">Valid Email</span>
           </div>
 
-          <div class="input-group">
+          <div class="input-group" id="password-group">
             <label for="password">Password</label>
-            <input type="password" id="password" name="password" />
+            <input type="password" id="password" name="password" required />
             <span class="msg">Incorrect Password</span>
           </div>
 
-          <button type="submit" class="login-button">Login</button>
+          <button type="submit" class="login-button">Log In</button>
         </form>
       </div>
     </div>
     <div id="root"></div>
 
+    <script>
+      (function () {
+        const params = new URLSearchParams(window.location.search);
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+
+        if (params.has("email")) emailInput.value = params.get("email");
+        if (params.has("password"))
+          passwordInput.value = params.get("password");
+
+        const emailGroup = document.getElementById("email-group");
+        const passwordGroup = document.getElementById("password-group");
+        const loginScreen = document.querySelector(".full-screen-container");
+        const root = document.getElementById("root");
+
+        function setGroupState(group, state, message) {
+          group.classList.remove("success", "error");
+          if (state) group.classList.add(state);
+          const msg = group.querySelector(".msg");
+          if (message) msg.textContent = message;
+        }
+
+        function isValidEmail(value) {
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+        }
+
+        document
+          .getElementById("login-form")
+          .addEventListener("submit", function (e) {
+            e.preventDefault();
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+            let valid = true;
+
+            if (!email) {
+              setGroupState(emailGroup, "error", "Email is required");
+              valid = false;
+            } else if (!isValidEmail(email)) {
+              setGroupState(emailGroup, "error", "Enter a valid email address");
+              valid = false;
+            } else {
+              setGroupState(emailGroup, "success", "Valid Email");
+            }
+
+            if (!password) {
+              setGroupState(passwordGroup, "error", "Password is required");
+              valid = false;
+            } else {
+              setGroupState(passwordGroup, "success", "Password accepted");
+            }
+
+            if (!valid) return;
+
+            loginScreen.classList.add("hidden");
+            root.classList.add("authenticated");
+          });
+      })();
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
