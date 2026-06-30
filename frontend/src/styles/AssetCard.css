@@ -1,84 +1,230 @@
 .asset-card {
-  background: white;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  border-left: 6px solid;
+  background: rgba(15, 23, 42, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 24px;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  gap: 20px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle brand gradient background on hover */
+.asset-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--brand-color);
+  opacity: 0.8;
+  transition: height 0.3s ease;
 }
 
 .asset-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  transform: translateY(-6px);
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(15, 23, 42, 0.55);
+  box-shadow: 
+    0 15px 35px -10px rgba(0, 0, 0, 0.6), 
+    0 0 20px -5px var(--brand-color);
 }
 
-.card-header {
-  padding: 24px 20px;
-  color: white;
+.asset-card:hover::before {
+  height: 4px;
+}
+
+/* Top bar: Symbol, full name, trend badge */
+.card-top {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 12px;
 }
 
-.card-header h2 {
-  margin: 0;
-  font-size: 28px;
-  font-weight: 700;
-  color: white;
-}
-
-.card-body {
-  padding: 24px 20px;
-  flex-grow: 1;
+.asset-info {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
-.card-name {
-  font-size: 14px;
-  color: #666;
-  margin-bottom: 20px;
-  min-height: 40px;
+.asset-symbol {
+  font-size: 1.45rem;
+  font-weight: 750;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+}
+
+.asset-name {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.trend-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.65rem;
+  font-weight: 750;
+  padding: 4px 8px;
+  border-radius: 8px;
+  letter-spacing: 0.05em;
+}
+
+.trend-badge.bullish {
+  background: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.trend-badge.bearish {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.badge-arrow {
+  flex-shrink: 0;
+}
+
+/* Middle Section: Price details */
+.card-middle {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 14px;
+  padding: 14px 18px;
+  margin: 4px 0;
 }
 
-.view-button {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 6px;
-  font-size: 14px;
+.price-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.price-label {
+  font-size: 0.65rem;
   font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
 }
 
-.view-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+.price-val {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #ffffff;
 }
 
-.view-button:active {
-  transform: scale(0.98);
+.predicted-val {
+  color: #ffffff;
+  font-weight: 700;
 }
 
-@media (max-width: 768px) {
+.price-divider {
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  transition: color 0.3s;
+}
+
+.asset-card:hover .price-divider {
+  color: var(--brand-color);
+}
+
+/* Bottom Metrics Row */
+.card-metrics {
+  display: flex;
+  gap: 12px;
+}
+
+.card-metric-pill {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+  padding: 8px 12px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.02);
+}
+
+.metric-tag {
+  font-size: 0.6rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.metric-num {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+.txt-bullish .metric-num {
+  color: #10b981;
+}
+
+.txt-bearish .metric-num {
+  color: #ef4444;
+}
+
+/* Footer Link */
+.card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.04);
+  margin-top: auto;
+  color: var(--text-secondary);
+  transition: color 0.2s;
+}
+
+.action-text {
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.action-arrow {
+  transition: transform 0.2s;
+}
+
+.asset-card:hover .card-action {
+  color: #ffffff;
+}
+
+.asset-card:hover .action-arrow {
+  transform: translateX(4px);
+  color: var(--brand-color);
+}
+
+@media (max-width: 480px) {
   .asset-card {
-    border-left-width: 5px;
+    padding: 18px;
+  }
+  
+  .asset-symbol {
+    font-size: 1.25rem;
+  }
+  
+  .card-middle {
+    padding: 10px 14px;
   }
 
-  .card-header h2 {
-    font-size: 24px;
-  }
-
-  .card-body {
-    padding: 16px;
+  .price-val {
+    font-size: 1rem;
   }
 }
