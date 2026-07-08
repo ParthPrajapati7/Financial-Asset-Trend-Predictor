@@ -9,6 +9,10 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleTimeString());
+  const [newSymbol, setNewSymbol] = useState('');
+  const [addingAsset, setAddingAsset] = useState(false);
+  const [addError, setAddError] = useState(null);
+  const [addSuccess, setAddSuccess] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,6 +64,69 @@ function Dashboard() {
 
   const handleAssetClick = (symbol) => {
     navigate(`/asset/${symbol}`);
+  };
+
+  const handleAddAsset = async (e) => {
+    e.preventDefault();
+    if (!newSymbol.trim()) return;
+    
+    const symbol = newSymbol.trim().toUpperCase();
+    
+    // Client-side duplicate check
+    if (assets.some(asset => asset.symbol === symbol)) {
+      setAddError(`Asset ${symbol} is already on the dashboard.`);
+      setAddSuccess(null);
+      return;
+    }
+    
+    try {
+      setAddingAsset(true);
+      setAddError(null);
+      setAddSuccess(null);
+      
+      const response = await fetch('http://localhost:5000/api/assets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ symbol }),
+      });
+      
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to add asset');
+      }
+      
+      // Update assets list locally
+      const updatedAssets = [...assets, { symbol: data.symbol, name: data.name, color: data.color }];
+      setAssets(updatedAssets);
+      setNewSymbol('');
+      setAddSuccess(data.message || `Successfully added ${data.name} (${data.symbol})!`);
+      
+      // Now fetch prediction for the new asset
+      try {
+        const predRes = await fetch(`http://localhost:5000/api/assets/${data.symbol}/prediction`);
+        if (predRes.ok) {
+          const predData = await predRes.json();
+          setPredictions(prev => ({
+            ...prev,
+            [data.symbol]: predData
+          }));
+        }
+      } catch (predErr) {
+        console.error(`Failed to fetch prediction for ${data.symbol}:`, predErr);
+      }
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setAddSuccess(null);
+      }, 5000);
+      
+    } catch (err) {
+      setAddError(err.message);
+    } finally {
+      setAddingAsset(false);
+    }
   };
 
   // Compute stats
@@ -184,6 +251,52 @@ function Dashboard() {
                   onClick={() => handleAssetClick(asset.symbol)}
                 />
               ))
+            )}
+          </div>
+
+          {/* Add Asset Control Panel */}
+          <div className="add-asset-container">
+            <h3 className="add-asset-title">Expand Dashboard Coverage</h3>
+            <p className="add-asset-subtitle">Query new ticker symbols from Yahoo Finance to ingest real-time OHLCV data & train predictive linear models.</p>
+            <form onSubmit={handleAddAsset} className="add-asset-form">
+              <div className="search-input-wrapper">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" className="search-icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                <input
+                  type="text"
+                  placeholder="ENTER TICKER SYMBOL (E.G. NVDA, MSFT, BTC-USD)"
+                  value={newSymbol}
+                  onChange={(e) => setNewSymbol(e.target.value)}
+                  disabled={addingAsset}
+                  className="search-input"
+                />
+              </div>
+              <button type="submit" className="add-asset-btn" disabled={addingAsset || !newSymbol.trim()}>
+                {addingAsset ? (
+                  <span className="btn-loading-content">
+                    <span className="spinner-mini"></span>
+                    INGESTING...
+                  </span>
+                ) : (
+                  <>
+                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" className="btn-icon"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    ADD ASSET
+                  </>
+                )}
+              </button>
+            </form>
+            
+            {addError && (
+              <div className="add-message error-message">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" className="message-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                <span>{addError}</span>
+              </div>
+            )}
+            
+            {addSuccess && (
+              <div className="add-message success-message">
+                <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round" strokeLinejoin="round" className="message-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <span>{addSuccess}</span>
+              </div>
             )}
           </div>
         </section>

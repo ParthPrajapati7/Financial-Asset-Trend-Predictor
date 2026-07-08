@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from flask_cors import CORS
 from datetime import datetime
 
@@ -57,9 +57,63 @@ def train_model(symbol):
         return None, None, None
 
 
-@app.route("/api/assets", methods=["GET"])
-def get_assets():
-    """Return list of available assets."""
+@app.route("/api/assets", methods=["GET", "POST"])
+def manage_assets():
+    """Return or add to the list of available assets."""
+    if request.method == "POST":
+        data = request.get_json() or {}
+        symbol = data.get("symbol", "").strip().upper()
+        
+        if not symbol:
+            return jsonify({"error": "Symbol is required"}), 400
+            
+        if symbol in ASSETS:
+            return jsonify({"error": f"Asset {symbol} is already on the dashboard"}), 400
+            
+        try:
+            ticker = yf.Ticker(symbol)
+            # Verify if the symbol is valid by downloading history
+            df = ticker.history(period="1d")
+            if df.empty:
+                return jsonify({"error": f"Could not retrieve data for symbol '{symbol}'. Please verify the symbol."}), 400
+                
+            # Retrieve name if possible
+            try:
+                info = ticker.info
+                name = info.get("longName") or info.get("shortName") or symbol
+            except Exception:
+                name = symbol
+                
+            # Predefined list of vibrant dark-theme friendly colors
+            SUGGESTED_COLORS = [
+                "#3b82f6",  # Blue
+                "#10b981",  # Emerald
+                "#f59e0b",  # Amber
+                "#ec4899",  # Pink
+                "#8b5cf6",  # Violet
+                "#06b6d4",  # Cyan
+                "#f97316",  # Orange
+                "#14b8a6",  # Teal
+            ]
+            
+            # Deterministic color assignment based on symbol name
+            color_idx = sum(ord(c) for c in symbol) % len(SUGGESTED_COLORS)
+            color = SUGGESTED_COLORS[color_idx]
+            
+            # Save new asset
+            ASSETS[symbol] = {"name": name, "color": color}
+            
+            return jsonify({
+                "symbol": symbol,
+                "name": name,
+                "color": color,
+                "message": f"Successfully added {name} ({symbol}) to dashboard"
+            }), 201
+            
+        except Exception as e:
+            return jsonify({"error": f"Failed to validate ticker symbol: {str(e)}"}), 500
+            
+    # GET method
     return jsonify(
         [
             {
