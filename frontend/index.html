@@ -59,6 +59,12 @@
         const loginScreen = document.querySelector(".full-screen-container");
         const root = document.getElementById("root");
 
+        // Restore authenticated state on page reload
+        if (localStorage.getItem("authenticated") === "true") {
+          loginScreen.classList.add("hidden");
+          root.classList.add("authenticated");
+        }
+
         function setGroupState(group, state, message) {
           group.classList.remove("success", "error");
           if (state) group.classList.add(state);
@@ -98,6 +104,8 @@
 
             if (!valid) return;
 
+            // Persist authentication state
+            localStorage.setItem("authenticated", "true");
             loginScreen.classList.add("hidden");
             root.classList.add("authenticated");
           });
